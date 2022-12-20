@@ -155,34 +155,37 @@ app.use("/shotspotterevents", shotSpotterRoutes);
 app.use("/dashboard-reports", dashboardReportRoutes);
 
 const port = process.env.PORT ? process.env.PORT : 3000;
+app.listen(port, () => {
+  console.log(`Server is listening on port ${port}`);
+});
 
-if (process.env.NODE_ENV === "staging" || process.env.NODE_ENV === "prod") {
-  // old options
-  // var options = {
-  //   key: fs.readFileSync('/etc/pki/tls/private/wildkeyno.pem'),
-  //   cert: fs.readFileSync('/etc/pki/tls/private/sf_bundle-g2-g1.crt'),
-  //   cert: fs.readFileSync('/etc/pki/tls/private/wildcert.crt')
-  // };
-  const keyFilePath =
-    process.env.SERVER_KEY_FILE_PATH ||
-    "/etc/pki/tls/private/camdenpdwildUN.key";
-  const certFilePath =
-    process.env.SERVER_CERT_FILE_PATH ||
-    "/etc/pki/tls/private/camdenpdwild.crt";
+// if (process.env.NODE_ENV === "staging" || process.env.NODE_ENV === "prod") {
+//   // old options
+//   // var options = {
+//   //   key: fs.readFileSync('/etc/pki/tls/private/wildkeyno.pem'),
+//   //   cert: fs.readFileSync('/etc/pki/tls/private/sf_bundle-g2-g1.crt'),
+//   //   cert: fs.readFileSync('/etc/pki/tls/private/wildcert.crt')
+//   // };
+//   const keyFilePath =
+//     process.env.SERVER_KEY_FILE_PATH ||
+//     "/etc/pki/tls/private/camdenpdwildUN.key";
+//   const certFilePath =
+//     process.env.SERVER_CERT_FILE_PATH ||
+//     "/etc/pki/tls/private/camdenpdwild.crt";
 
-  const options = {
-    key: fs.readFileSync(keyFilePath),
-    cert: fs.readFileSync(certFilePath),
-    ca: fs.readFileSync("/etc/pki/tls/private/camdenpdwild.pem"),
-  };
+//   const options = {
+//     key: fs.readFileSync(keyFilePath),
+//     cert: fs.readFileSync(certFilePath),
+//     ca: fs.readFileSync("/etc/pki/tls/private/camdenpdwild.pem"),
+//   };
 
-  // listen for requests
-  https.createServer(options, app).listen(port, () => {
-    console.log(`Server is listening on port ${port}`);
-  });
-} else {
-  //listen for requests
-  app.listen(port, () => {
-    console.log(`Server is listening on port ${port}`);
-  });
-}
+//   // listen for requests
+//   https.createServer(options, app).listen(port, () => {
+//     console.log(`Server is listening on port ${port}`);
+//   });
+// } else {
+//   //listen for requests
+//   app.listen(port, () => {
+//     console.log(`Server is listening on port ${port}`);
+//   });
+// }
