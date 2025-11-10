@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms in HTML</title>
+</head>
+<body>
+    <h3>About Me - Form</h3>
+    <form>
+        <label for="firstName">First Name:</label>
+        <input id="firstName" type="text" placeholder="First Name">
+        <br />
+        <br />
+        <label for="lastName">Last Name:</label>
+        <input id="lastName" type="text">
+        <br />
+        <br />
+        <label for="contactNumber">Contact:</label>
+        <input id="contactNumber" type="number" maxlength="10" max="9999999999">
+        <br />
+        <br />
+        <label for="email">Email:</label>
+        <input id="email" type="email" placeholder="Write your email">
+        <br />
+        <br />
+        <label for="addr">Address</label>
+        <textarea id="addr" rows="4" cols="20"></textarea>
+        <div>
+            <label for="male">Male:</label>
+            <input id="male" type="radio" value="male" name="gender">
+            <label for="female">Female:</label>
+            <input id="female" type="radio" value="female" name="gender">
+            <label for="others">Others:</label>
+            <input id="others" type="radio" value="others" name="gender">
+        </div>
+
+        <br />
+        <br />
+        
+        <label for="dob">DoB</label>
+        <input id="dob" type="date" min="2022-10-20" />
+
+        <br />
+        <br />
+
+        <label for="doc">Upload Documents</label>
+        <input id="doc" type="file" />
+
+        <br />
+        <br />
+
+        <label for="city">City:</label>
+        <select id="city">
+            <option value="delhi">Delhi</option>
+            <option value="mumbai">Mumbai</option>
+            <option value="bangalore">Bangalore</option>
+        </select>
+
+
+        <br />
+        <br />
+
+        <label for="eyeColor">Eye Color</label>
+        <input id="eyeColor" type="color" />
+
+        <br />
+        <br />
+
+        <input type="submit">
+    </form>
+</body>
+</html>
