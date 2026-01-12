@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF - 8">
+    <meta http-equiv="X - UA - Compatible" content="IE = edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="productList">
+        <div class="product">
+            <h3>Product 1</h3>
+            <p>Price: $10</p>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <h3>Product 2</h3>
+            <p>Price: $20</p>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <h3>Product 3</h3>
+            <p>Price: $30</p>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+    </div>
+
+    <script>
+        const parent = document.getElementById("productList");
+        parent.addEventListener("click", addToCart);
+
+        function addToCart(e) {
+            let targetElem = e.target;
+            let targetClass = targetElem.getAttribute("class");
+
+            if (targetClass === "add-to-cart") {
+                let h3 = e.target.parentElement.children[0]
+                let p = e.target.parentElement.children[1];
+                let title = h3.innerText;
+                let price = p.innerText;
+                console.log(`You have added ${title} of ${price} to your cart`);
+            } else {
+                console.log("Ignore");
+            }
+        }
+    </script>
+</body>
+
+</html>

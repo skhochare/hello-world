@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 400px;
+            height: 400px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+    <input />
+    <script>
+        let box = document.querySelector(".box");
+        // MOUSE EVENTS
+
+        // box.addEventListener("click", function() {
+        //     console.log("I was Clicked!");
+        // }, { once: true });
+
+        // box.addEventListener("click", function() {
+        //     console.log("Fake Click!");
+        // });
+
+        box.addEventListener("mouseover", (event) => {
+            console.log("Hover occured", event);
+        });
+
+        box.addEventListener("mouseleave", () => {
+            console.log("mouseleave occured");
+        });
+
+        box.addEventListener("mousedown", function() {
+            console.log("I was Clicked!");
+        });
+
+        box.addEventListener("dblclick", function() {
+            console.log("Double Clicked!");
+        });
+
+        // KEYBOARD EVENTS
+        let input = document.querySelector("input");
+        // input.addEventListener("keydown", function() {
+        //     console.log("Key down called!");
+        // })
+
+        // input.addEventListener("keyup", function() {
+        //     console.log("keyup called!");
+        // })
+
+        // input.addEventListener("keypress", function() {
+        //     console.log("keypress called!");
+        // })
+
+        input.addEventListener("keypress", function(eventObj) {
+            console.log("keypress called!", eventObj.key, eventObj);
+        })
+    </script>
+</body>
+</html>
