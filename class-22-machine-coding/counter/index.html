@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css" />
+    <title>Star Component</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Count Down Timer</h1>
+        <div class="timer_label">
+            <h2 class="timer_label--hrs">Hours</h2>
+            <h2 class="timer_label--mins">Minutes</h2>
+            <h2 class="timer_label--sec">Seconds</h2>
+        </div>
+
+        <div class="timer_inputs">
+            <input type="number" maxlength="2" oninput="this.value = this.value.slice(0, this.maxLength)" id="hr" placeholder="00">
+            <span>:</span>
+            <input type="number" maxlength="2" oninput="this.value = this.value.slice(0, this.maxLength)" id="min" placeholder="00">
+            <span>:</span>
+            <input type="number" maxlength="2" oninput="this.value = this.value.slice(0, this.maxLength)" id="sec" placeholder="00">
+        </div>
+
+        <div class="container_btns">
+            <button class="btn start" id="start">Start</button>
+            <button class="btn start" id="reset">Reset</button>
+            <button class="btn start" id="pause">Pause</button>
+            <button class="btn start" id="continue">Continue</button>
+        </div>
+    </div>
+    <script src="./script.js"></script>
+</body>
+
+</html>
