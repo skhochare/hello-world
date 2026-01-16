@@ -1,38 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css" />
-    <title>Star Component</title>
+    <title>Countdown Timer</title>
 </head>
-
 <body>
     <div class="container">
-        <h1>Count Down Timer</h1>
+        <h1>Countdown Timer</h1>
         <div class="timer_label">
-            <h2 class="timer_label--hrs">Hours</h2>
-            <h2 class="timer_label--mins">Minutes</h2>
-            <h2 class="timer_label--sec">Seconds</h2>
+            <h2>Hours</h2>
+            <h2>Minutes</h2>
+            <h2>Seconds</h2>
         </div>
 
         <div class="timer_inputs">
-            <input type="number" maxlength="2" oninput="this.value = this.value.slice(0, this.maxLength)" id="hr" placeholder="00">
+            <input type="number" id="hr" placeholder="00" min="0" max="99">
             <span>:</span>
-            <input type="number" maxlength="2" oninput="this.value = this.value.slice(0, this.maxLength)" id="min" placeholder="00">
+            <input type="number" id="min" placeholder="00" min="0" max="59">
             <span>:</span>
-            <input type="number" maxlength="2" oninput="this.value = this.value.slice(0, this.maxLength)" id="sec" placeholder="00">
+            <input type="number" id="sec" placeholder="00" min="0" max="59">
         </div>
 
         <div class="container_btns">
-            <button class="btn start" id="start">Start</button>
-            <button class="btn start" id="reset">Reset</button>
-            <button class="btn start" id="pause">Pause</button>
-            <button class="btn start" id="continue">Continue</button>
+            <button id="start">Start</button>
+            <button id="pause">Pause</button>
+            <button id="continue">Continue</button>
+            <button id="reset">Reset</button>
         </div>
     </div>
     <script src="./script.js"></script>
 </body>
-
 </html>

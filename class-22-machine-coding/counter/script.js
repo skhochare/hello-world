@@ -2,55 +2,65 @@ const startBtn = document.getElementById("start");
 const resetBtn = document.getElementById("reset");
 const pauseBtn = document.getElementById("pause");
 const continueBtn = document.getElementById("continue");
-const minInput = document.getElementById("min");
+
 const hrsInput = document.getElementById("hr");
+const minInput = document.getElementById("min");
 const secInput = document.getElementById("sec");
 
-let prevTimer = 0;
-let timeInSeconds;
-let prevInSecs;
-let timerId;
+let timeInSeconds = 0;
+let timerId = null;
 
 function updateUI() {
-    // Update the UI from timeInSeconds
+    // Calculate units from total seconds
+    const h = Math.floor(timeInSeconds / 3600);
+    const m = Math.floor((timeInSeconds % 3600) / 60);
+    const s = timeInSeconds % 60;
+
+    // Pad with leading zeros for a cleaner look
+    hrsInput.value = h.toString().padStart(2, '0');
+    minInput.value = m.toString().padStart(2, '0');
+    secInput.value = s.toString().padStart(2, '0');
 }
 
-startBtn.addEventListener("click", function() {
-    // Get the values
-    let hrs = hrsInput.value || 0;
-    let mins = minInput.value || 0;
-    let sec = secInput.value || 0;
+function stopTimer() {
+    clearInterval(timerId);
+    timerId = null;
+}
 
-    // Find out the timer in seconds
-    timeInSeconds = Number(hrs) * 3600 + Number(mins) * 60 + Number(sec);
-    timer(timeInSeconds);
-});
+function startCountdown() {
+    if (timerId) return; // Prevent multiple intervals
 
-function timer(timeRemaining) {
-    if (timeRemaining === 0) return;
-
-    timerId = setTimeout(() => {
-        console.log("Timer clocked", timeRemaining);
-        timeInSeconds = --timeRemaining;
-        timer(timeRemaining);
+    timerId = setInterval(() => {
+        if (timeInSeconds <= 0) {
+            stopTimer();
+            alert("Time's up!");
+            return;
+        }
+        timeInSeconds--;
+        updateUI();
     }, 1000);
 }
 
-resetBtn.addEventListener("click", function() {
-    prevInSecs = 0;
+startBtn.addEventListener("click", function() {
+    const h = parseInt(hrsInput.value) || 0;
+    const m = parseInt(minInput.value) || 0;
+    const s = parseInt(secInput.value) || 0;
 
+    timeInSeconds = h * 3600 + m * 60 + s;
+
+    if (timeInSeconds > 0) {
+        startCountdown();
+    }
+});
+
+pauseBtn.addEventListener("click", stopTimer);
+
+continueBtn.addEventListener("click", startCountdown);
+
+resetBtn.addEventListener("click", function() {
+    stopTimer();
+    timeInSeconds = 0;
     hrsInput.value = "";
     minInput.value = "";
     secInput.value = "";
-
-    clearTimeout(timerId);
-});
-
-pauseBtn.addEventListener("click", function() {
-    prevInSecs = timeInSeconds;
-    clearTimeout(timerId);
-});
-
-continueBtn.addEventListener("click", function() {
-    timer(prevInSecs);
 });
