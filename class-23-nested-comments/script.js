@@ -68,10 +68,37 @@ const createCommentInput = () => {
 const firstComment = createComment("Shashwat", "Let's Start!");
 commentContainer.append(firstComment);
 
+let isCommentOn = false;
 commentContainer.addEventListener("click", function (event) {
     const clickedElement = event.target;
 
     if (clickedElement.tagName === "BUTTON") {
-        console.log("A button was clicked!");
+        if (clickedElement.classList.contains("reply") && !isCommentOn) {
+            isCommentOn = true;
+            clickedElement.closest(".main-comment").nextElementSibling.append(createCommentInput());
+
+            return;
+        }
+
+        if (clickedElement.classList.contains("post")) {
+            isCommentOn = false;
+            const commentInput = clickedElement.closest(".comment-input-container");
+            const name = commentInput.children[0].value;
+            const text = commentInput.children[1].value;
+
+            if (name && text) {
+                clickedElement.closest(".sub-comment-container").append(createComment(name, text));
+            }
+
+            commentInput.remove();
+            return;
+        }
+
+        if (clickedElement.classList.contains("cancel")) {
+            isCommentOn = false;
+            clickedElement.closest(".comment-input-container").remove();
+
+            return;
+        }
     }
 });
