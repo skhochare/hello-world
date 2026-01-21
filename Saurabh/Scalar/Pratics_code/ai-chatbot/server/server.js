@@ -9,6 +9,13 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+ 
+app.get("/api/config", (_req, res) => {
+  res.json({
+    title: process.env.APP_TITLE || "WeatherInfo AI Chatbot",
+  });
+});
+
 
 // ✅ Check if message is about weather
 function isWeatherQuery(message) {
@@ -29,6 +36,17 @@ function extractCity(message) {
   return "London"; // default
 }
 
+function formatTime(timestamp) {
+  return new Date(timestamp).toLocaleString("en-IN", {
+    timeZone: "UTC",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+}
+
+
 // ✅ Get weather info
 async function getWeather(message) {
   const city = extractCity(message);
@@ -36,7 +54,9 @@ async function getWeather(message) {
 
   const response = await fetch(url);
   const data = await response.json();
-  const time=new Date().toLocaleTimeString();
+  const localTimestamp = (data.dt + data.timezone) * 1000;
+  const time = formatTime(localTimestamp);
+  //const time=new Date().toLocaleTimeString();
 
   if (data.main) {
     return `The temperature in ${city} is ${data.main.temp}°C with ${data.weather[0].description}. Current time is ${time}.`;
