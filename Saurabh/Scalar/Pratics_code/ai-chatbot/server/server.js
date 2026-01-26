@@ -9,31 +9,26 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
- 
-app.get("/api/config", (_req, res) => {
-  res.json({
-    title: process.env.APP_TITLE || "WeatherInfo AI Chatbot",
-  });
-});
 
+// ---------- HELPERS ----------
 
-// ✅ Check if message is about weather
 function isWeatherQuery(message) {
   return /weather|temperature|temp|forecast/i.test(message);
 }
 
-// ✅ Extract city from message
+function isPopulationQuery(message) {
+  return /population|people|how many people|citizens/i.test(message);
+}
+
 function extractCity(message) {
-  // Match "in <city>", "weather <city>", "temp <city>", "temperature <city>" for e.g Temperature in Paris
-  // const regex = /(?:in|weather|temp|temperature)\s+'in'+([a-zA-Z\s]+)/i;
-  const match = message.match(/\bin\s+([a-zA-Z\s]+)\b/i);
-  // const match = message.match(regex);
-  // if (!match) return null;
-  if (match && match[1]) {
-    // Remove trailing punctuation
-    return match[1].trim().replace(/[?.,!]/g, "");
-  }
-  return "London"; // default
+  return message
+    .toLowerCase()
+    .replace(/population|people|how many people|citizens|temp|temperature|weather|forecast|of|in|is|what|the|\?/gi, "")
+    .replace(/[^a-z\s]/gi, "")
+    .trim()
+    .split(/\s+/)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
 }
 
 function formatTime(timestamp) {
@@ -46,64 +41,120 @@ function formatTime(timestamp) {
   });
 }
 
+// ---------- WEATHER ----------
 
-// ✅ Get weather info
 async function getWeather(message) {
-  const city = extractCity(message);
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=metric`;
+  const cityText = extractCity(message);
+  if (!cityText) return "Please specify a city name.";
 
-  const response = await fetch(url);
-  const data = await response.json();
-  const localTimestamp = (data.dt + data.timezone) * 1000;
-  const time = formatTime(localTimestamp);
-  //const time=new Date().toLocaleTimeString();
+  const attempts = [cityText, `${cityText},US`, `${cityText},IN`, `${cityText},GB`];
 
-  if (data.main) {
-    return `The temperature in ${city} is ${data.main.temp}°C with ${data.weather[0].description}. Current time is ${time}.`;
-  } else {
-    return `Sorry, I couldn’t fetch the weather for ${city} right now.`;
+  for (const city of attempts) {
+    try {
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
+        city
+      )}&appid=${process.env.WEATHER_API_KEY}&units=metric`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.cod === 200) {
+        const localTimestamp  = (data.dt + data.timezone) * 1000;
+        const time = formatTime(localTimestamp);
+        return `The temperature in ${data.name} is ${data.main.temp}°C with ${data.weather[0].description}. Current time is ${time}.`;
+      }
+    } catch {}
   }
+
+  return "Sorry, I couldn’t fetch the weather right now.";
 }
 
-// ✅ Chat route
+// ---------- POPULATION ----------
+
+async function getCityPopulation(cityText) {
+  const city = cityText.split(" ")[0];
+
+  const query = `
+    SELECT ?population WHERE {
+      ?city rdfs:label "${city}"@en.
+      ?city wdt:P1082 ?population.
+    } LIMIT 1
+  `;
+
+  const url = `https://query.wikidata.org/sparql?format=json&query=${encodeURIComponent(query)}`;
+
+  const res = await fetch(url, {
+    headers: { "User-Agent": "city-population-bot" },
+  });
+
+  const data = await res.json();
+  const population = data?.results?.bindings?.[0]?.population?.value;
+
+  if (!population) {
+    return `Sorry, I couldn’t find population data for ${cityText}.`;
+  }
+
+  return `The population of ${cityText} is approximately ${Number(population).toLocaleString()}.`;
+}
+
+// ---------- CHAT ROUTE ----------
+
 app.post("/api/chat", async (req, res) => {
   const userMessage = req.body.message;
 
   try {
-    // 🧩 Weather query
     if (isWeatherQuery(userMessage)) {
-      const weatherInfo = await getWeather(userMessage); // pass message here
-      return res.json({ reply: weatherInfo }); // ✅ this return is inside the function
+      return res.json({ reply: await getWeather(userMessage) });
     }
 
-    // 💬 AI Studio API fallback
+    if (isPopulationQuery(userMessage)) {
+      const city = extractCity(userMessage);
+      if (!city) {
+        return res.json({ reply: "Please specify a city name." });
+      }
+      return res.json({ reply: await getCityPopulation(city) });
+    }
+
+    // Gemini fallback
     const aiResponse = await fetch(
-      "https://aistudio.googleapis.com/v1/models/text-bison-001:generateText",
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${process.env.GEMINI_API_KEY}`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.AISTUDIO_API_KEY}`,
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: userMessage,
-          temperature: 0.7,
-          max_output_tokens: 512,
+          contents: [{ parts: [{ text: userMessage }] }],
         }),
       }
     );
 
-    const data = await aiResponse.json();
-    const reply =
-      data.candidates && data.candidates[0]?.content
-        ? data.candidates[0].content
-        : "Sorry, I couldn't generate a response.";
+     const data = await aiResponse.json();
+    // const reply =
+    //   data?.candidates?.[0]?.content?.parts?.map(p => p.text).join("") ||
+    //   "Hi! How can I help you?";
+    // 🔍 Always log while debugging
+    console.log("🧠 RAW GEMINI RESPONSE:", JSON.stringify(data, null, 2));
+
+    let reply = "Sorry, I couldn't generate a response.";
+
+    if (data?.candidates?.length > 0) {
+      const candidate = data.candidates[0];
+
+      if (candidate.content?.parts?.length > 0) {
+        reply = candidate.content.parts
+          .map(p => p.text)
+          .join("");
+      } else if (candidate.output) {
+        reply = candidate.output;
+      }
+    }
 
     res.json({ reply });
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Something went wrong" });
   }
 });
+
+// ---------- START ----------
 
 app.listen(5000, () => console.log("✅ Server running on port 5000"));
