@@ -4,7 +4,9 @@ const UserCard = ({ user }) => {
     const [showEmail, setShowEmail] = useState(false);
 
     const toggleShowEmail = () => {
-        setShowEmail((prevShowEmail) => !prevShowEmail);
+        // setShowEmail((prevShowEmail) => !prevShowEmail);
+        const newValue = !showEmail;
+        setShowEmail(newValue);
     };
 
     return (

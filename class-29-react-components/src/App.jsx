@@ -4,6 +4,7 @@ import './App.css';
 import Counter from './component/Counter';
 import UserCard from './component/UserCard';
 import ProductList from './component/ProductList';
+import Todo from './component/Todo';
 
 function App() {
   const userInfo = {
@@ -25,7 +26,8 @@ function App() {
     <div>
       {/* <Counter initialCount={0} /> */}
       {/* <UserCard user={userInfo} /> */}
-      <ProductList products={Products} />
+      {/* <ProductList products={Products} /> */}
+      <Todo />
     </div>
   )
 }
