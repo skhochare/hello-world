@@ -6,8 +6,16 @@ function Movies() {
          {url:"https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68", title:"Movie 2"},
          {url:"https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68", title:"Movie 3"},
          {url:"https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68", title:"Movie 4"},
-         {url:"https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68", title:"Movie 5vhbejbcjhecefrfcewrf rferferf"},
+         {url:"https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68", title:"Movie 5"},
      ]);
+     const [pageNo, setPageNo] = useState(1);
+     const handlePrev = () => {
+        if(pageNo!=1) setPageNo(pageNo-1);
+     }
+
+     const handleNext = () => {
+        setPageNo(pageNo+1);
+     }
   return (
     <div>
         <div className='text-2xl font-bold text-center m-5'>
@@ -20,6 +28,12 @@ function Movies() {
                     <div className='text-white w-full text-center text-xl bg-gray-900/70 rounded-xl p-2'>{movieObj.title}</div>
                 </div>)
             })}
+        </div>
+        <div className='bg-gray-400 h-[50px] w-full mt-8 flex justify-center gap-3 p-4'>
+            {/* dont show if pageNo is 0  */}
+            <div onClick={handlePrev}><i class="fa-solid fa-left-long"></i></div>
+            <div>{pageNo}</div>
+            <div onClick={handleNext}><i class="fa-solid fa-right-long"></i></div>
         </div>
     </div>
   )
