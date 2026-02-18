@@ -18,9 +18,12 @@ function Movies() {
      }
   return (
     <div>
+        {/* title */}
         <div className='text-2xl font-bold text-center m-5'>
             <h1>Trending Movies</h1>
         </div>
+
+        {/* all movies */}
         <div className='flex justify-evenly flex-wrap gap-8'>
             {movies.map((movieObj) =>{
                 return (
@@ -29,6 +32,8 @@ function Movies() {
                 </div>)
             })}
         </div>
+
+        {/* pagination */}
         <div className='bg-gray-400 h-[50px] w-full mt-8 flex justify-center gap-3 p-4'>
             {/* dont show if pageNo is 0  */}
             <div onClick={handlePrev}><i class="fa-solid fa-left-long"></i></div>
