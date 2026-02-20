@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import axios from "axios";
+import MovieCard from './MovieCard';
 function Movies() {
     const [movies, setMovies] = useState([
         {url:"https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68", title:"Movie 1"},
@@ -21,7 +22,7 @@ function Movies() {
     function fetchData(){
       const options = {
       method: "GET",
-      url: "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1",
+      url: `https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=${pageNo}`,
       headers: {
         accept: "application/json",
         Authorization:
@@ -37,7 +38,7 @@ function Movies() {
       .catch((err) => console.error(err));
     }
     fetchData();
-  }, []);
+  }, [pageNo]);
   return (
     <div>
         {/* title */}
@@ -49,9 +50,10 @@ function Movies() {
         <div className='flex justify-evenly flex-wrap gap-8'>
             {movies.map((movieObj) =>{
                 return (
-                <div className="h-[40vh] w-[200px] bg-center bg-cover rounded-xl hover:scale-110 duration-300 hover:cursor-pointer" style={{backgroundImage:`url(https://image.tmdb.org/t/p/original${movieObj["poster_path"]})`}}>
-                    <div className='text-white w-full text-center text-xl bg-gray-900/70 rounded-xl p-2'>{movieObj.title}</div>
-                </div>)
+                    <MovieCard
+                        movieObj={movieObj}
+                    ></MovieCard>
+                )
             })}
         </div>
 
