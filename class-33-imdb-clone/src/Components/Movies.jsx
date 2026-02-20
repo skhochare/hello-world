@@ -10,12 +10,24 @@ function Movies() {
          {url:"https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68", title:"Movie 5"},
      ]);
      const [pageNo, setPageNo] = useState(1);
+     const [watchlist, setWatchlist] = useState([]);
+
+     
+     //handlers
      const handlePrev = () => {
         if(pageNo!=1) setPageNo(pageNo-1);
      }
 
      const handleNext = () => {
         setPageNo(pageNo+1);
+     }
+
+     const addToWatchlist = (movieObj) => {
+      //spread old movies from wl , add new movie in wl -> this creates a new array with updated wl 
+      // const updatedWatchList = [...watchlist, movieObj];
+      watchlist.push(movieObj)
+      console.log("adding movie "+movieObj.title+" to watchlist");
+      setWatchlist(watchlist);
      }
 
        useEffect(() => {
@@ -52,6 +64,7 @@ function Movies() {
                 return (
                     <MovieCard
                         movieObj={movieObj}
+                        addToWatchlist={addToWatchlist}
                     ></MovieCard>
                 )
             })}
