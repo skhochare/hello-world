@@ -24,11 +24,15 @@ function Movies() {
 
      const addToWatchlist = (movieObj) => {
       //spread old movies from wl , add new movie in wl -> this creates a new array with updated wl 
-      // const updatedWatchList = [...watchlist, movieObj];
-      watchlist.push(movieObj)
+      const updatedWatchList = [...watchlist, movieObj];
+      setWatchlist(updatedWatchList);
       console.log("adding movie "+movieObj.title+" to watchlist");
-      setWatchlist(watchlist);
      }
+
+     const removeFromWatchlist = (movieObj) => {
+      let updatedWatchList = watchlist.filter(movie => movie.id !== movieObj.id);
+      setWatchlist(updatedWatchList);
+     } 
 
        useEffect(() => {
     function fetchData(){
@@ -65,6 +69,8 @@ function Movies() {
                     <MovieCard
                         movieObj={movieObj}
                         addToWatchlist={addToWatchlist}
+                        watchlist={watchlist}
+                        removeFromWatchlist={removeFromWatchlist}
                     ></MovieCard>
                 )
             })}
