@@ -12,7 +12,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/watchlist" element={<WatchList />} />
       </Routes>
-    </MovieContextWrapper>
+    </MovieContextWrapper> 
   )
 }
 
