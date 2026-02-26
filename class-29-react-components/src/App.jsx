@@ -25,9 +25,9 @@ function App() {
   return (
     <div>
       {/* <Counter initialCount={0} /> */}
-      {/* <UserCard user={userInfo} /> */}
+      <UserCard user={userInfo} />
       {/* <ProductList products={Products} /> */}
-      <Todo />
+      {/* <Todo /> */}
     </div>
   )
 }

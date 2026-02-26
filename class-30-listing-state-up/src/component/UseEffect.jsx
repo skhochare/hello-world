@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react';
 
 const Test = () => {
 
+    
+    const [count, setCount] = useState(0);
+    const [test, setTest] = useState('');
+
     const increment = () => {
         setCount(count+1);
     };
@@ -15,8 +19,6 @@ const Test = () => {
     }, [count]);
 
 
-    const [count, setCount] = useState(0);
-    const [test, setTest] = useState('');
     return (
         <div>
             <div>{count}</div>
