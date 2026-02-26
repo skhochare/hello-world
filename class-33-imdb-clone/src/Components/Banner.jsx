@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { MovieContext } from "../Context/MovieContext";
 
 function Banner() {
   const [bannerImage, setBannerImage] = useState(
@@ -7,6 +8,8 @@ function Banner() {
   );
   const [title, setTitle] = useState("Placeholder Title");
   const API_KEY = "ff85d5a0";//ff85d5a0
+  const { watchlist, addToWatchlist, removeFromWatchlist, setWatchlist } = useContext(MovieContext);
+  console.log({ watchlist, addToWatchlist, removeFromWatchlist, setWatchlist });
 
   useEffect(() => {
     const fetchData = async () => {

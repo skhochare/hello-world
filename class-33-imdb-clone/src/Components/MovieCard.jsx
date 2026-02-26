@@ -2,7 +2,6 @@ import React from "react";
 
 function MovieCard({ movieObj, addToWatchlist, watchlist, removeFromWatchlist }) {
   const presentInWL = () => {
-    console.log(watchlist);
     //if current movieObj is present in WL or not
     //implememt the logic using "some" method of JS
     for (let i = 0; i < watchlist.length; i++) {
