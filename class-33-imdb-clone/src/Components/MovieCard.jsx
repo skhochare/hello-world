@@ -25,9 +25,10 @@ function MovieCard({ movieObj, addToWatchlist, watchlist, removeFromWatchlist })
 
       <div className="flex items-center m-4 h-8 w-8 bg-gray-900/60">
         {presentInWL() ? (
-          <div onClick={() => removeFromWatchlist(movieObj)}>❌</div>
+          <div className="text-red-600 text-2xl cursor-pointer" onClick={() => removeFromWatchlist(movieObj)}>✔</div>
+          
         ) : (
-          <div onClick={() => addToWatchlist(movieObj)}>😍</div>
+          <div className=" text-2xl cursor-pointer" onClick={() => addToWatchlist(movieObj)}>😍</div>
         )}
       </div>
     </div>

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from 'react'
-=======
 import { useState, useEffect, useContext } from 'react'
->>>>>>> upstream/master
 import axios from "axios";
 import MovieCard from './MovieCard';
 import { MovieContext } from '../Context/MovieContext';
@@ -16,8 +12,11 @@ function Movies() {
     { url: "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68", title: "Movie 5" },
   ]);
   const [pageNo, setPageNo] = useState(1);
-  const [watchlist, setWatchlist] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
 
+  //handlers
+
+  const { watchlist, addToWatchlist, removeFromWatchlist, setWatchlist } = useContext(MovieContext);
 
   //handlers
   const handlePrev = () => {
@@ -25,19 +24,7 @@ function Movies() {
   }
 
   const handleNext = () => {
-    setPageNo(pageNo + 1);
-  }
-
-  const addToWatchlist = (movieObj) => {
-    //spread old movies from wl , add new movie in wl -> this creates a new array with updated wl 
-    const updatedWatchList = [...watchlist, movieObj];
-    setWatchlist(updatedWatchList);
-    console.log("adding movie " + movieObj.title + " to watchlist");
-  }
-
-  const removeFromWatchlist = (movieObj) => {
-    let updatedWatchList = watchlist.filter(movie => movie.imdbID !== movieObj.idimdbID)
-    setWatchlist(updatedWatchList);
+    if (totalPages!= 0 && totalPages!=pageNo)  setPageNo(pageNo + 1);
   }
 
   useEffect(() => {
@@ -48,39 +35,12 @@ function Movies() {
             const movie = res?.data?.Search;
             console.log("Movie Data:", movie);
             setMovies(movie);
+            const totalResults = res?.data?.totalResults;
+            setTotalPages(Math.ceil(totalResults / 10));
           })
       } catch (err) {
         console.error(err);
       };
-  const { watchlist, addToWatchlist, removeFromWatchlist, setWatchlist } = useContext(MovieContext);
-
-  //handlers
-  const handlePrev = () => {
-    if (pageNo != 1) setPageNo(pageNo - 1);
-  }
-
-  const handleNext = () => {
-    setPageNo(pageNo + 1);
-  }
-
-  useEffect(() => {
-    function fetchData() {
-      const options = {
-        method: "GET",
-        url: `https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=${pageNo}`,
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxNzQ5ZWU4NjkyN2M4NjJlNmFjNDAzNjBlM2ViOGMwZCIsIm5iZiI6MTY1NzgxODcwMy4yMDIsInN1YiI6IjYyZDA0ZTRmMzk0YTg3MDRhZTVjNWEzZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._LNDpBJ--YTga2vupX46hCWhBnsgEW43JjSJ2hyTA6k",
-        },
-      };
-      axios
-        .request(options)
-        .then((res) => {
-          const movie = res.data?.results;
-          setMovies(movie);
-        })
-        .catch((err) => console.error(err));
     }
     fetchData();
   }, [pageNo]);
@@ -95,7 +55,7 @@ function Movies() {
       <div className='flex justify-evenly flex-wrap gap-8'>
         {movies.map((movieObj) => {
           return (
-            <div key={movieObj.id}>
+            <div key={movieObj.imdbID}>
               <MovieCard
                 movieObj={movieObj}
                 addToWatchlist={addToWatchlist}
@@ -118,4 +78,4 @@ function Movies() {
   )
 }
 
-export default Movies
+export default Movies;
