@@ -6,10 +6,21 @@ function MovieCard({ movieObj, addToWatchlist, watchlist, removeFromWatchlist })
     //implememt the logic using "some" method of JS
     for (let i = 0; i < watchlist.length; i++) {
       if (watchlist[i].imdbID == movieObj.imdbID) {
-        return true; //change button to cross
+        return true; //change button to cross/right
       }
     }
     return false; //change button to heart emoji
+  };
+
+
+   const handleAdd = () => {
+    addToWatchlist(movieObj);
+    alert("Movie added to Watchlist ✅");
+  };
+
+  const handleRemove = () => {
+    removeFromWatchlist(movieObj);
+    alert("Movie removed from Watchlist ❌");
   };
 
   return (
@@ -25,10 +36,10 @@ function MovieCard({ movieObj, addToWatchlist, watchlist, removeFromWatchlist })
 
       <div className="flex items-center m-4 h-8 w-8 bg-gray-900/60">
         {presentInWL() ? (
-          <div className="text-red-600 text-2xl cursor-pointer" onClick={() => removeFromWatchlist(movieObj)}>✔</div>
+          <div className="text-red-600 text-2xl cursor-pointer" onClick={handleRemove}>✔</div>
           
         ) : (
-          <div className=" text-2xl cursor-pointer" onClick={() => addToWatchlist(movieObj)}>😍</div>
+          <div className=" text-2xl cursor-pointer" onClick={handleAdd}>😍</div>
         )}
       </div>
     </div>

@@ -49,16 +49,28 @@ function WatchList() {
   //   } 
   // }, [searchQuery]);
 
+  const handlePlayOnYoutube = (movie) => {
+    const query = `${movie.Title} ${movie.Year}`;
+
+    const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+
+    const newWindow = window.open(youtubeSearchUrl, "_blank");
+
+    if (!newWindow) {
+      alert("Unable to open YouTube. Please allow popups.");
+    }
+  };
+
   let filteredList = watchlist.filter(({ Title }) =>
     Title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
 
-if (sortOrder === "asc") {
-  filteredList = [...filteredList].sort((a, b) => a.Year - b.Year);
-} else if (sortOrder === "desc") {
-  filteredList = [...filteredList].sort((a, b) => b.Year - a.Year);
-}
+  if (sortOrder === "asc") {
+    filteredList = [...filteredList].sort((a, b) => a.Year - b.Year);
+  } else if (sortOrder === "desc") {
+    filteredList = [...filteredList].sort((a, b) => b.Year - a.Year);
+  }
 
   const handleAscendingRatings = () => {
     setSortOrder("asc");
@@ -72,7 +84,7 @@ if (sortOrder === "asc") {
     return <h2>
       No movie has been added to watchlist. yet.
     </h2>
-   } 
+  }
 
   return (
     <div>
@@ -112,10 +124,11 @@ if (sortOrder === "asc") {
               const { Title, vote_average, Year, Type, imdbID } = movie;
               return (
                 <tr className="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
-                  <th scope="row"  className="hidden px-6 py-4 font-medium text-heading whitespace-nowrap">
+                  <th scope="row" className="hidden px-6 py-4 font-medium text-heading whitespace-nowrap">
                     {imdbID}
                   </th>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 text-blue-600 cursor-pointer hover:underline"
+                    onClick={() => handlePlayOnYoutube(movie)}>
                     {Title}
                   </td>
                   <td className="px-6 py-4">

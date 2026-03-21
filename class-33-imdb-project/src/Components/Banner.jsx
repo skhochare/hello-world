@@ -15,7 +15,8 @@ function Banner() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://www.omdbapi.com/?apikey=${API_KEY}&s=avengers&page=1`
+          `https://www.omdbapi.com/?apikey=${API_KEY}&s=true&page=1`
+          // `https://www.omdbapi.com/?apikey=${API_KEY}&s=avengers&page=1`
         );
 
         const data = await response.json();
