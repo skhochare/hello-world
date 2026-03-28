@@ -1,0 +1,11 @@
+{
+  "name": "class-39-intro-node",
+  "packageManager": "yarn@4.11.0",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14"
+  }
+}
