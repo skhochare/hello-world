@@ -1,5 +1,4 @@
 exports.testBody = (req, res) => {
-    console.log(req.body);
     res.status(200).json({
         receivedBody: req.body
     });
