@@ -1,9 +1,35 @@
 import { Button, Form, Input } from "antd";
 import { Link } from "react-router-dom";
+import { message } from "antd";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+// API
+import { loginUser } from "../api/users";
 
 const Login = () => {
-    const handleUserLogin = (values) => {
-        console.log("User LoggedIn!!", values);
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+
+    const handleUserLogin = async (values) => {
+        try {
+            setLoading(true);
+
+            const response = await loginUser(values);
+
+            if (response.success) {
+                message.success("Login successful");
+
+                // For now, just redirect
+                navigate("/");
+            } else {
+                message.error(response.message);
+            }
+        } catch (err) {
+            message.error(err.response?.data?.message || "Invalid credentials");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
