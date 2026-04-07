@@ -1,10 +1,30 @@
 import { Button, Form, Input } from "antd";
 import { Link } from "react-router-dom";
+import { message } from "antd";
+import { useNavigate } from "react-router-dom";
+
+// API
+import { registerUser } from "../api/users";
 
 
 function Register() {
-    const handleUserRegister = (values) => {
-        console.log("register form values", values);
+    const navigate = useNavigate();
+    const handleUserRegister = async (values) => {
+        try {
+            const response = await registerUser(values);
+            if (response.success) {
+                message.success("Registration successful. Please, login!");
+
+                setTimeout(() => {
+                    navigate("/login");
+                }, 1000);
+            } else {
+                message.error(response.message);
+            }
+        } catch(err) {
+            console.log("Error:", err);
+            message.error(err.response?.data?.message || "Something went wrong! Try again later.");
+        }
     };
 
 
