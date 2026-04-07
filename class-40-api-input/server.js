@@ -37,7 +37,8 @@ app.get("/api/movies", (req, res) => {
     let result = movies;
 
     const { language, minRating } = req.query;
-
+    console.log(language, minRating);
+   
     if (language) {
         result = result.filter(m => m.language === language);
     }
@@ -45,6 +46,7 @@ app.get("/api/movies", (req, res) => {
     if (minRating) {
         result = result.filter(m => m.rating >= Number(minRating));
     }
+
 
     res.send({
         success: true,

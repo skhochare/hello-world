@@ -1,14 +1,12 @@
 import { useState, useEffect, useContext } from 'react'
 import axios from "axios";
 import MovieCard from './MovieCard';
-import { useSelector, useDispatch } from 'react-redux';
 import paginationSlice from "../redux/paginationSlice";
 import { MovieContext } from '../Context/MovieContext';
 
 const actions = paginationSlice.actions;
 
 function Movies() {
-  const dispatch = useDispatch();
   const [movies, setMovies] = useState([
     { url: "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68", title: "Movie 1" },
     { url: "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68", title: "Movie 2" },
@@ -16,30 +14,22 @@ function Movies() {
     { url: "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68", title: "Movie 4" },
     { url: "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68", title: "Movie 5" },
   ]);
-<<<<<<< HEAD
   const [pageNo, setPageNo] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
   //handlers
 
-=======
-  const pageNo = useSelector((store) => store.paginationState.page);
->>>>>>> upstream/master
   const { watchlist, addToWatchlist, removeFromWatchlist, setWatchlist } = useContext(MovieContext);
 
   //handlers
   const handlePrev = () => {
     if (pageNo != 1) {
-      dispatch(actions.prev())
+     setPageNo(pageNo - 1)
     };
   }
 
   const handleNext = () => {
-<<<<<<< HEAD
     if (totalPages!= 0 && totalPages!=pageNo)  setPageNo(pageNo + 1);
-=======
-    dispatch(actions.next())
->>>>>>> upstream/master
   }
 
   useEffect(() => {

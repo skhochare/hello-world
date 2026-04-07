@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 
+/* create a new user */
 export const register = async (req, res) => {
     try {
         // Step 1: Read user input from request
@@ -31,5 +32,14 @@ export const register = async (req, res) => {
             success: false,
             message: "Registration failed"
         });
+    }
+};
+/* get all users */
+export const getUsers = async (req, res) => {
+    try {
+        const users = await User.find(); // fetch all users
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
