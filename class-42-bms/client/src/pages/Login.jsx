@@ -19,6 +19,10 @@ const Login = () => {
 
             if (response.success) {
                 message.success("Login successful");
+                const token = response.data?.token;
+                if (token) {
+                    localStorage.setItem("token", token);
+                }
 
                 // For now, just redirect
                 navigate("/");
