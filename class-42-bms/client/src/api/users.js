@@ -9,3 +9,8 @@ export const loginUser = async (payload) => {
     const response = await apiClient.post("/user/login", payload);
     return response.data;
 };
+
+export const getCurrentUser = async () => {
+    const response = await apiClient.get("/user/me");
+    return response.data;
+};

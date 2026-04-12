@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
+import { signToken } from "../utils/jwt.js";
 
 /* create a new user */
 export const register = async (req, res) => {
@@ -60,9 +61,14 @@ export const login = async (req, res) => {
             });
         }
 
+        const token = signToken({ userId: user._id.toString() });
+
         res.status(200).json({
             success: true,
-            message: "Login successful"
+            message: "Login successful",
+            data: {
+                token
+            }
         });
     } catch(err) {
         res.status(500).json({
@@ -71,12 +77,30 @@ export const login = async (req, res) => {
         });
     }
 };
-/* get all users */
-export const getUsers = async (req, res) => {
+
+export const getCurrentUser= async (req, res) => {
     try {
-        const users = await User.find(); // fetch all users
-        res.status(200).json(users);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+        const userId = req.userId;
+        const user = await User.findById(userId).select("-password");
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "User fetched successfully",
+            data: {
+                user
+            }
+        });
+    } catch(err) {
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetfh user"
+        });
     }
 };
