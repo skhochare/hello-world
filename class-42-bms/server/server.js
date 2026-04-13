@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import movieRouter from "./routes/movieRoutes.js";
+import theatreRouter from "./routes/theatreRoutes.js";
 import cors from "cors";
 
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use("/api/user", userRoutes);
 app.use("/api/movie", movieRouter);
+app.use("/api/theatre", theatreRouter);
 
 app.get("/health", (req, res) => {
     res.send("Server is running!");

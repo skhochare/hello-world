@@ -50,6 +50,7 @@ export const updateMovie = async (req, res) => {
 
 export const deleteMovie = async (req, res) => {
   try {
+    console.log("req", req.body);
     await Movie.findByIdAndDelete(req.body.movieId);
     res.send({
       success: true,

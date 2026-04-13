@@ -1,36 +1,35 @@
 import apiClient from "./index.js";
 
-export const addMovie = async (payload) => {
+export const addTheatre = async (payload) => {
     try {
-        const response = await apiClient.post("/movie/add-movie", payload);
+        const response = await apiClient.post("/theatre/add-theatre", payload);
         return response.data;
     } catch (err) {
         return err.response?.data || { success: false, message: err.message };
     }
 };
 
-export const getAllMovies = async () => {
+export const getMyTheatres = async () => {
     try {
-        const response = await apiClient.get("/movie/get-all-movies");
+        const response = await apiClient.get("/theatre/get-my-theatres");
         return response.data;
     } catch (err) {
         return err.response?.data || { success: false, message: err.message };
     }
 };
 
-export const updateMovie = async (payload) => {
+export const getAllTheatres = async () => {
     try {
-        const response = await apiClient.put("/movie/update-movie", payload);
+        const response = await apiClient.get("/theatre/get-all-theatres");
         return response.data;
     } catch (err) {
         return err.response?.data || { success: false, message: err.message };
     }
 };
 
-export const deleteMovie = async (payload) => {
+export const approveTheatre = async (payload) => {
     try {
-        console.log("=>", payload);
-        const response = await apiClient.post("/movie/delete-movie", payload);
+        const response = await apiClient.put("/theatre/approve-theatre", payload);
         return response.data;
     } catch (err) {
         return err.response?.data || { success: false, message: err.message };
