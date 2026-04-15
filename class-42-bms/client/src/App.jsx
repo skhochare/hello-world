@@ -11,9 +11,11 @@ import Register from "./pages/Register";
 import Admin from "./pages/admin";
 import PNF from "./pages/PageNotFound";
 import Profile from "./pages/Profile";
+import TheatreShows from "./pages/partner/TheatreShows";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Partner from "./pages/partner";
+import MovieDetails from "./pages/MovieDetails";
 
 function App() {
   return (
@@ -23,10 +25,12 @@ function App() {
         <Route path="/register" element={<Register />} />
         {/* User will see */}
         <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/movie/:movieId" element={<ProtectedRoute><MovieDetails /></ProtectedRoute>} />
         {/* Admin will see */}
         <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
         {/* Partner will see */}
         <Route path="/partner" element={<ProtectedRoute><Partner /></ProtectedRoute>} />
+        <Route path="/partner/theatres/:theatreId/shows" element={<ProtectedRoute><TheatreShows /></ProtectedRoute>} />
         <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<PNF />} />
       </Routes>

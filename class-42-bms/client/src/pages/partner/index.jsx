@@ -4,11 +4,13 @@ import { PlusOutlined } from "@ant-design/icons";
 
 import { getMyTheatres } from "../../api/theatres";
 import TheatreForm from "./TheatreForm";
+import { useNavigate } from "react-router-dom";
 
 function Partner() {
     const [open, setOpen] = useState(false);
     const [theatres, setTheatres] = useState([]);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const fetchTheatres = async () => {
         try {
@@ -46,6 +48,14 @@ function Partner() {
                     <Tag color="orange">Pending</Tag>
                 ),
         },
+        {
+            title: "Add Shows",
+            render: (_, record) => (
+                record.isActive && (
+                    <Button onClick={() => navigate(`/partner/theatres/${record._id}/shows`)}>+ Shows</Button>
+                )
+            )
+        }
     ];
 
     return (
