@@ -23,9 +23,11 @@ const Home = () => {
 
     return (
         <div>
-            <h2>Home Component</h2>
-            <p>Name: {user.name}</p>
-            <p>Email: {user.email}</p>
+            <header className="App-header_base">
+                <h2>Home Component</h2>
+                <p>Name: {user.name}</p>
+                <p>Email: {user.email}</p>
+            </header>
         </div>
     )
 };
